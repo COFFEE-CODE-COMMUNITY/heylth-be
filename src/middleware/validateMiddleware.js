@@ -4,8 +4,10 @@ const validateMiddleware = schema => {
         if (error) return res.status(400).json({
             success: false,
             message: 'Validation failed!',
-            details: error.message[0].details,
+            error: error.details[0].message
         });
         next();
     };
 };
+
+export default validateMiddleware;
