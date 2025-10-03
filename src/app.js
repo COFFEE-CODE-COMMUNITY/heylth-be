@@ -12,7 +12,7 @@ const createApp = () => {
     
     // Routes
     app.use('/api/auth', userRouter);
-    app.use('api/sleep', sleepTrackerRouter);
+    app.use('/api/sleep', sleepTrackerRouter);
     return app;
 };
 
