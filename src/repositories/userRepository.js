@@ -11,10 +11,26 @@ export const createUser = async data => await prisma.user.create({
     }
 });
 
-export const getAllUsername = async () => await prisma.user.findMany({
+export const getUsersUsername = async () => await prisma.user.findMany({
     select: { username: true }
 });
 
-export const getAllEmail = async () => await prisma.user.findMany({
+export const getUserEmail = async () => await prisma.user.findMany({
     select: { email: true }
+});
+
+export const getUserData = async data => await prisma.user.findFirst({
+    where: { 
+        OR: [
+            { username: data.username },
+            { email: data.email },
+        ]
+    },
+    select: { 
+        id: true,
+        username: true,
+        password: true,
+        age: true,
+        sex: true
+    }
 });

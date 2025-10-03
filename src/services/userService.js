@@ -1,10 +1,11 @@
 import { nanoid } from "nanoid";
-import { createUser, getAllUsername, getAllEmail } from "../repositories/userRepository.js";
-import { hashPassword } from "../utils/hashPassword.js";
+import { createUser, getUsersUsername, getUserEmail, getUserData } from "../repositories/userRepository.js";
+import { hashPassword, comparePassword } from "../utils/hashPassword.js";
+import { signToken } from "../utils/jwt.js";
 
 export const addUser = async data => {
-    const allUsername = await getAllUsername();
-    const allEmail = await getAllEmail();
+    const allUsername = await getUsersUsername();
+    const allEmail = await getUserEmail();
     // cek duplikasi username dan email
     const isDuplicateEmail = allEmail.filter(user => user.email === data.email.toLowerCase());
     const isDuplicateUsername = allUsername.filter(usn => usn.username.toLowerCase() === data.username.toLowerCase());
@@ -13,4 +14,23 @@ export const addUser = async data => {
     
     const user = {id: nanoid(), ...data, password: await hashPassword(data.password)};
     return createUser(user);
+};
+
+export const getUser = async data => {
+    const user = await getUserData(data);
+    if(!user) throw new Error(`Username ${data.username} not found!`);
+
+    const isMatchPassword = await comparePassword(data.password, user.password);
+    if(!isMatchPassword) throw new Error(`Wrong password!`);
+
+    const payload = {
+        id: user.id,
+        email: user.email,
+        username: user.username, 
+    };
+
+    const { password, ...safeUser } = user;
+
+    const token = signToken(payload);
+    return { token, ...safeUser };
 };
