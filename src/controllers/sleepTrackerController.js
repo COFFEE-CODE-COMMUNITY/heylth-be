@@ -14,18 +14,26 @@ export const getAllSleepTrackerController = async (req, res) => {
 };
 
 export const getSleepTrackerByIdController = async (req, res) => {
-    const result = await getSleepTrackerById(req.params.sleepId, req.user.id);
-    return res.status(200).json({
-        success: true,
-        message: `Success to get specific user's sleep`,
-        data: {
-            id: result.id,
-            sleep_start: result.sleepStart,
-            sleep_end: result.sleepEnd,
-            duration: result.duration,
-            date: result.date,
-        },
-    });
+    try {
+        const result = await getSleepTrackerById(req.params.sleepId, req.user.id);
+        return res.status(200).json({
+            success: true,
+            message: `Success to get specific user's sleep`,
+            data: {
+                id: result.id,
+                sleep_start: result.sleepStart,
+                sleep_end: result.sleepEnd,
+                duration: result.duration,
+                date: result.date,
+            },
+        });
+    } catch (error) {
+        return res.status(404).json({
+            success: false,
+            message: `Failed to get user's sleep with sleep id`,
+            error: error.message,
+        });
+    }
 };
 
 export const addSleepTrackerController = async (req, res) => {

@@ -8,6 +8,7 @@ export const getAllSleepTracker = async userId => {
 
 export const getSleepTrackerById = async (sleepId, userId) => {
     const result = await findSleepTrackerById(sleepId, userId);
+    if(!result) throw new Error(`Sleep id ${sleepId} not found!`);
     const date = result.createdAt.toLocaleDateString();
     return {...result, date};
 }
