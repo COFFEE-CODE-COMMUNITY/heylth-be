@@ -8,7 +8,6 @@ export const findAllSleepTracker = async userId => await prisma.sleepTracker.fin
         sleepEnd: true,
         duration: true,
         createdAt: true,
-        userId: true,
     },
     orderBy: { createdAt: "desc" },
 });

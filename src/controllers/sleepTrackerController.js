@@ -9,6 +9,8 @@ export const getAllSleepTrackerController = async (req, res) => {
     return res.status(200).json({
         success: true,
         message: `Success to get all histories user's sleep!`,
+        username: req.user.username,
+        user_id: req.user.id,
         data: userSleepTracker,
     });
 };
