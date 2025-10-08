@@ -15,15 +15,23 @@ export const getAllSleepTrackerController = async (req, res) => {
 
 export const addSleepTrackerController = async (req, res) => {
     const result = await addSleepTracker(req.body, req.user.id);
-    return res.status(201).json({
-        success: true,
-        message: 'Success to create new sleep tracker!',
-        name: req.user.username,
-        data: {
-            id: result.id,
-            sleep_start: result.sleepStart,
-            sleep_end: result.sleepEnd,
-            duration: result.duration,
-        }
-    });
+    try {
+        return res.status(201).json({
+            success: true,
+            message: 'Success to create new sleep tracker!',
+            name: req.user.username,
+            data: {
+                id: result.id,
+                sleep_start: result.sleepStart,
+                sleep_end: result.sleepEnd,
+                duration: result.duration,
+            },
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: 'Failed to create new sleep tracker!',
+            error: error.message,
+        });
+    }
 };

@@ -7,7 +7,8 @@ export const getAllSleepTracker = async userId => {
 };  
 
 export const addSleepTracker = async (data, userId) => {
-    const inputData = {id: nanoid(), ...data, userId}
-    const result = await newSleepTracker(inputData);
+    if((data.sleep_start - data.sleep_end) < 0 ) throw new Error('Invalid input of sleep_start or sleep_end!');
+    const inputData = {id: nanoid(), ...data}
+    const result = await newSleepTracker(inputData, userId);
     return result;
 };
