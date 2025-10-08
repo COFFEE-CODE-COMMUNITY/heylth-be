@@ -13,6 +13,20 @@ export const findAllSleepTracker = async userId => await prisma.sleepTracker.fin
     orderBy: { createdAt: "desc" },
 });
 
+export const findSleepTrackerById = async (sleepId, userId) => prisma.sleepTracker.findUnique({
+    where: {
+        id: sleepId,
+        userId: userId,
+    },
+    select: {
+        id: true,
+        sleepStart: true,
+        sleepEnd: true,
+        duration: true,
+        createdAt: true,
+    },
+})
+
 export const newSleepTracker = async (data, userId) => await prisma.sleepTracker.create({
     data: {
         id: data.id,

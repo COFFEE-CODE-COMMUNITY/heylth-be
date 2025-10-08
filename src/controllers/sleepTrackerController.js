@@ -1,4 +1,4 @@
-import { addSleepTracker, getAllSleepTracker } from "../services/sleepTrackerService.js";
+import { addSleepTracker, getAllSleepTracker, getSleepTrackerById } from "../services/sleepTrackerService.js";
 
 export const getAllSleepTrackerController = async (req, res) => {
     const userSleepTracker = await getAllSleepTracker(req.user.id);
@@ -10,6 +10,21 @@ export const getAllSleepTrackerController = async (req, res) => {
         success: true,
         message: `Success to get all histories user's sleep!`,
         data: userSleepTracker,
+    });
+};
+
+export const getSleepTrackerByIdController = async (req, res) => {
+    const result = await getSleepTrackerById(req.params.sleepId, req.user.id);
+    return res.status(200).json({
+        success: true,
+        message: `Success to get specific user's sleep`,
+        data: {
+            id: result.id,
+            sleep_start: result.sleepStart,
+            sleep_end: result.sleepEnd,
+            duration: result.duration,
+            date: result.date,
+        },
     });
 };
 
