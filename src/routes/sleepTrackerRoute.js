@@ -7,6 +7,6 @@ const router = Router();
 router.use(verifyToken);
 router.get('/user', getAllSleepTrackerController);
 router.get('/:sleepId/user', getSleepTrackerByIdController);
-router.post('/add', addSleepTrackerController);
+router.post('/', addSleepTrackerController);
 
 export default router;
