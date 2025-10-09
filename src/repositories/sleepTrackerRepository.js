@@ -31,7 +31,7 @@ export const newSleepTracker = async (data, userId) => await prisma.sleepTracker
         id: data.id,
         sleepStart: data.sleep_start,
         sleepEnd: data.sleep_end,
-        duration: 24 - (data.sleep_start - data.sleep_end),
+        duration: data.sleepDuration,
         userId: userId,
     }, 
 });

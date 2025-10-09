@@ -14,15 +14,16 @@ export const getSleepTrackerById = async (sleepId, userId) => {
 }
 
 export const addSleepTracker = async (data, userId) => {
-    if((data.sleep_start - data.sleep_end) < 0 ) throw new Error('Invalid input of sleep_start or sleep_end!');
-    const inputData = {id: nanoid(), ...data}
+    let sleepDuration;
+    if( (data.sleep_start - data.sleep_end) < 0 ) sleepDuration = data.sleep_end - data.sleep_start;
+    else sleepDuration = 24 - (data.sleep_start - data.sleep_end);
+    const inputData = {id: nanoid(), sleepDuration, ...data};
     const result = await newSleepTracker(inputData, userId);
     return result;
 };
 
 export const updateSleepTrackerById = async (data, sleepId, userId) => {
     const isExist = await findSleepTrackerById(sleepId, userId);
-    // console.log(isExist);
     if(!isExist) throw new Error(`Sleep with id ${sleepId} at user id ${userId} not found!`);
 
     const updateData = {};
