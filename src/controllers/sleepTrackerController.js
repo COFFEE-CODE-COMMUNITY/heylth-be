@@ -1,4 +1,9 @@
-import { addSleepTracker, getAllSleepTracker, getSleepTrackerById } from "../services/sleepTrackerService.js";
+import { 
+    addSleepTracker, 
+    getAllSleepTracker, 
+    getSleepTrackerById,
+    updateSleepTrackerById,
+} from "../services/sleepTrackerService.js";
 
 export const getAllSleepTrackerController = async (req, res) => {
     const userSleepTracker = await getAllSleepTracker(req.user.id);
@@ -56,6 +61,29 @@ export const addSleepTrackerController = async (req, res) => {
         return res.status(400).json({
             success: false,
             message: 'Failed to create new sleep tracker!',
+            error: error.message,
+        });
+    }
+};
+
+export const updateSleepTrackerByIdController = async (req, res) => {
+    try {
+        const result = await updateSleepTrackerById(req.body, req.params.sleepId, req.user.id);
+        return res.status(200).json({
+            success: true,
+            message: `Success to update history sleep with id ${req.params.sleepId}`,
+            userId: req.user.id,
+            data: {
+                id: result.id,
+                sleep_start: result.sleepStart,
+                sleep_end: result.sleepEnd,
+                duration: result.duration,
+            },
+        });
+    } catch (error) {
+        return res.status(404).json({
+            success: false,
+            message: 'Failed to update history sleep tracker!',
             error: error.message,
         });
     }

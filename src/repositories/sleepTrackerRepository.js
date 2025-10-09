@@ -35,3 +35,8 @@ export const newSleepTracker = async (data, userId) => await prisma.sleepTracker
         userId: userId,
     }, 
 });
+
+export const updateSleepTracker = async (updateData, sleepId, userId) => await prisma.sleepTracker.update({
+    where: { id: sleepId, userId: userId },
+    data: updateData
+})
