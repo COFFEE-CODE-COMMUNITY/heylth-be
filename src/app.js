@@ -1,6 +1,7 @@
 import express from "express";
 import userRouter from './routes/userRoute.js';
 import sleepTrackerRouter from './routes/sleepTrackerRoute.js';
+import eatTrackerRouter from './routes/eatTrackerRoute.js';
 import cors from 'cors';
 
 const createApp = () => {
@@ -13,6 +14,7 @@ const createApp = () => {
     // Routes
     app.use('/api/auth', userRouter);
     app.use('/api/sleep', sleepTrackerRouter);
+    app.use('/api/eat', eatTrackerRouter);
     return app;
 };
 
