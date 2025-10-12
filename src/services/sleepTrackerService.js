@@ -26,26 +26,21 @@ export const updateSleepTrackerById = async (data, sleepId, userId) => {
     const isExist = await findSleepTrackerById(sleepId, userId);
     if(!isExist) throw new Error(`Sleep with id ${sleepId} at user id ${userId} not found!`);
     const updateData = {};
-
     
     if(data.sleep_start && ( (data.sleep_start - isExist.sleepEnd) < 0) ) {
         updateData.sleepStart = data.sleep_start;
         updateData.duration = isExist.sleepEnd - data.sleep_start;
-        console.log(updateData);
-    } else {
+    } else if(data.sleep_start && ( (data.sleep_start - isExist.sleepEnd) > 0) ) {
         updateData.sleepStart = data.sleep_start;
         updateData.duration = data.sleep_start - isExist.sleepEnd ;
-        console.log(updateData);
     }
-    
+
     if(data.sleep_end && ( ( data.sleep_start - isExist.sleepEnd) > 0) ) {
         updateData.sleepEnd = data.sleep_end;
         updateData.duration = 24 - (data.sleep_end - isExist.sleepStart);
-        console.log(updateData);
-    } else {
+    } else if(data.sleep_end && ( ( data.sleep_start - isExist.sleepEnd) > 0)) {
         updateData.sleepEnd = data.sleep_end;
         updateData.duration = data.sleep_end - isExist.sleepStart ;
-        console.log(updateData);
     }
 
     const result = await updateSleepTracker(updateData, sleepId, userId);
