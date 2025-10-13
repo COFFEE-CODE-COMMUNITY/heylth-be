@@ -4,7 +4,7 @@ import { getAllEatTrackerController,  getEatTrackerByIdController, addEatTracker
 const router = Router();
 
 router.use(verifyToken);
-router.get('/user', getAllEatTrackerController);
+router.get('/', getAllEatTrackerController);
 router.get('/:eatId', getEatTrackerByIdController);
 router.post('/', addEatTrackerController);
 router.patch('/:eatId', updateEatTrackerController);
