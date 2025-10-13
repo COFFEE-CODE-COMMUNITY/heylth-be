@@ -1,4 +1,4 @@
-import { allEatTracker, addEatTracker  } from "../services/eatTrackerService.js";
+import { allEatTracker, eatTrackerById, addEatTracker  } from "../services/eatTrackerService.js";
 
 export const getAllEatTrackerController = async (req, res) => {
     const result = await allEatTracker(req.user.id);
@@ -17,6 +17,27 @@ export const getAllEatTrackerController = async (req, res) => {
             date: r.createdAt.toLocaleDateString(),
         })),
     });
+};
+
+export const getEatTrackerByIdController = async (req, res) => {
+    try {
+        const result = await eatTrackerById(req.user.id, req.params.eatId);
+        return res.status(200).json({
+            success: true, 
+            message: `Success to get user's eat!`,
+            data: {
+                id: result.id,
+                meal_type: result.meal_type,
+                date: result.date,
+            },
+        });
+    } catch (error) {
+        return res.status(404).json({
+            success: false,
+            message: `Failed to get user's eat!`,
+            error: error.message,
+        });
+    }
 };
 
 export const addEatTrackerController = async (req, res) => {
