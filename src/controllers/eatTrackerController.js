@@ -1,4 +1,4 @@
-import { allEatTracker, eatTrackerById, addEatTracker  } from "../services/eatTrackerService.js";
+import { allEatTracker, eatTrackerById, addEatTracker, updateEatTrackerById  } from "../services/eatTrackerService.js";
 
 export const getAllEatTrackerController = async (req, res) => {
     const result = await allEatTracker(req.user.id);
@@ -52,4 +52,25 @@ export const addEatTrackerController = async (req, res) => {
             date: result.date,
         },
     });
+};
+
+export const updateEatTrackerController = async (req, res) => {
+    try {
+        const result = await updateEatTrackerById(req.body, req.user.id, req.params.eatId);
+        return res.status(200).json({
+            success: true,
+            message: `Success to update eat tracker!`,
+            data: {
+                id: result.id,
+                meal_type: result.meal_type,
+                date: result.date,
+            },
+        });
+    } catch (error) {
+        return res.status(404).json({
+            success: false,
+            message: 'Failed to update eat tracker!',
+            error: error.message,
+        });
+    }
 };

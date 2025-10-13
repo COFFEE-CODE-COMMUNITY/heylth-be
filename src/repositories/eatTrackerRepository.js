@@ -30,3 +30,13 @@ export const newEatTracker = async (data, userId) => prisma.eatTracker.create({
         userId: userId,
     },
 });
+
+export const updateEatTracker = async (updateData, userId, eatId) => await prisma.eatTracker.update({
+    where: { id: eatId, userId: userId },
+    data: updateData,
+    select: {
+        id: true, 
+        meal_type: true,
+        createdAt: true,
+    },
+});
