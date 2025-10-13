@@ -11,7 +11,11 @@ export const getAllEatTrackerController = async (req, res) => {
         message: `Success to get all histories user's eat!`,
         username: req.user.username,
         user_id: req.user.id,
-        data: result.date,
+        data: result.map(r => ({
+            id: r.id,
+            meal_type: r.meal_type,
+            date: r.createdAt.toLocaleDateString(),
+        })),
     });
 };
 
