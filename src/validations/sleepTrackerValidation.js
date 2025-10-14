@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-export const addSleepTracker = Joi.object({
+export const addSleepTrackerSchema = Joi.object({
     sleep_start: Joi.number().required(),
-    sleep_end: Joi.number().required()
+    sleep_end: Joi.number().required(),
 });
