@@ -44,8 +44,8 @@ export const getSleepTrackerByIdController = async (req, res) => {
 };
 
 export const addSleepTrackerController = async (req, res) => {
-    const result = await addSleepTracker(req.body, req.user.id);
     try {
+        const result = await addSleepTracker(req.body, req.user.id);
         return res.status(201).json({
             success: true,
             message: 'Success to create new sleep tracker!',
