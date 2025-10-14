@@ -6,13 +6,15 @@ import {
     addSleepTrackerController,
     updateSleepTrackerByIdController
 } from "../controllers/sleepTrackerController.js";
+import { addSleepTrackerSchema } from "../validations/sleepTrackerValidation.js";
+import validateMiddleware from "../middleware/validateMiddleware.js";
 
 const router = Router();
 
 router.use(verifyToken);
 router.get('/user', getAllSleepTrackerController);
 router.get('/:sleepId/user', getSleepTrackerByIdController);
-router.post('/', addSleepTrackerController);
+router.post('/', validateMiddleware(addSleepTrackerSchema), addSleepTrackerController);
 router.patch('/:sleepId', updateSleepTrackerByIdController);
 
 export default router;
