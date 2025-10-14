@@ -14,13 +14,30 @@ export const getSleepTrackerById = async (sleepId, userId) => {
 }
 
 export const addSleepTracker = async (data, userId) => {
-    let sleepDuration;
-    if( (data.sleep_start - data.sleep_end) < 0 ) sleepDuration = data.sleep_end - data.sleep_start;
-    else sleepDuration = 24 - (data.sleep_start - data.sleep_end);
-    const inputData = {id: nanoid(), sleepDuration, ...data};
+    const { sleep_start, sleep_end } = data;
+  
+    // Validasi range jam
+    if (
+      sleep_start < 0 || sleep_start >= 24 ||
+      sleep_end < 0 || sleep_end >= 24
+    ) {
+      throw new Error("sleep_start and sleep_end must be between 0 and 23");
+    }
+  
+    // Hitung durasi
+    let sleepDuration = sleep_end - sleep_start;
+    if (sleepDuration < 0) sleepDuration += 24;
+    if (sleep_start === sleep_end) sleepDuration = 0; 
+  
+    const inputData = {
+      id: nanoid(),
+      sleepDuration,
+      ...data,
+    };
+  
     const result = await newSleepTracker(inputData, userId);
     return result;
-};
+};  
 
 export const updateSleepTrackerById = async (data, sleepId, userId) => {
     const isExist = await findSleepTrackerById(sleepId, userId);
