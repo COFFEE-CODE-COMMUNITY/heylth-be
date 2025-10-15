@@ -1,4 +1,4 @@
-import { allScreenTime, addScreenTime } from "../services/screenTimeService.js";
+import { allScreenTime, screenTimeById, addScreenTime } from "../services/screenTimeService.js";
 
 export const getAllScreenTimeController = async (req, res) => {
     const result = await allScreenTime(req.user.id);
@@ -17,6 +17,27 @@ export const getAllScreenTimeController = async (req, res) => {
             date: s.createdAt.toLocaleDateString(),
         })),
     });
+};
+
+export const getScreenTimeByIdController = async (req, res) => {
+    try {
+        const result = await screenTimeById(req.params.screenTimeId, req.user.id);
+        return res.status(200).json({
+            success: true,
+            message: `Success to get user's screen time!`,
+            data: {
+                id: result.id,
+                duration_minutes: result.durationMinutes,
+                date: result.date,
+            },
+        });
+    } catch (error) {
+        return res.status(404).json({
+            success: false,
+            message: `Failed to get user's screen time!`,
+            error: error.message,
+        });
+    }
 };
 
 export const addScreenTimeController = async (req, res) => {
