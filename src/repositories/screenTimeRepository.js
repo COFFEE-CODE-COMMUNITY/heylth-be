@@ -8,3 +8,11 @@ export const findAllScreenTime = async userId => await prisma.screenTimeTracker.
         createdAt: true,
     },
 });
+
+export const newScreenTime = async data => await prisma.screenTimeTracker.create({
+    data: { 
+        id: data.id,
+        durationMinutes: data.duration_minutes,
+        userId: data.userId,
+    },
+});
