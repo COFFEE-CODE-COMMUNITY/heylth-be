@@ -41,17 +41,25 @@ export const getEatTrackerByIdController = async (req, res) => {
 };
 
 export const addEatTrackerController = async (req, res) => {
-    const result = await addEatTracker(req.body, req.user.id);
-    return res.status(200).json({
-        success: true,
-        message: `Success to create new eat tracker!`,
-        username: req.user.username,
-        data: {
-            id: result.id,
-            meal_type: result.meal_type,
-            date: result.date,
-        },
-    });
+    try {
+        const result = await addEatTracker(req.body, req.user.id);
+        return res.status(200).json({
+            success: true,
+            message: `Success to create new eat tracker!`,
+            username: req.user.username,
+            data: {
+                id: result.id,
+                meal_type: result.meal_type,
+                date: result.date,
+            },
+        });
+    } catch (error) {
+        return res.status(409).json({
+            success: true,
+            messsage: 'Failed to create new eat tracker!',
+            error: error.message,
+        });
+    }
 };
 
 export const updateEatTrackerController = async (req, res) => {
