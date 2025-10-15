@@ -1,4 +1,4 @@
-import { allScreenTime, screenTimeById, addScreenTime } from "../services/screenTimeService.js";
+import { allScreenTime, screenTimeById, addScreenTime, updateScreenTimeById } from "../services/screenTimeService.js";
 
 export const getAllScreenTimeController = async (req, res) => {
     const result = await allScreenTime(req.user.id);
@@ -52,4 +52,25 @@ export const addScreenTimeController = async (req, res) => {
             date: result.date,
         },
     });
+};
+
+export const updateScreenTimeController = async (req, res) => {
+    try {
+        const result = await updateScreenTimeById(req.body, req.params.screenTimeId, req.user.id);
+        return res.status(200).json({
+            success: true,
+            message: `Success to update screen time!`,
+            data: {
+                id: result.id,
+                duration_minutes: result.durationMinutes,
+                date: result.date,
+            },
+        });
+    } catch (error) {
+        return res.status(404).json({
+            success: false,
+            message: `Failed to update screen time!`,
+            error: error.message,
+        });
+    }
 };
