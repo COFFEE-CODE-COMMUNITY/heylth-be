@@ -43,7 +43,7 @@ export const getEatTrackerByIdController = async (req, res) => {
 export const addEatTrackerController = async (req, res) => {
     try {
         const result = await addEatTracker(req.body, req.user.id);
-        return res.status(200).json({
+        return res.status(201).json({
             success: true,
             message: `Success to create new eat tracker!`,
             username: req.user.username,
