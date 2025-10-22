@@ -9,7 +9,6 @@ export const allScreenTime = async userId => {
 export const addScreenTime = async (data, userId) => {
     const allScreenTime = await findAllScreenTime(userId);
     const isExist = allScreenTime.find(st => st.createdAt.toLocaleDateString() === new Date().toLocaleDateString());
-    console.log(isExist);
     if(isExist) throw new Error(`Screen time already exist at date ${new Date().toLocaleDateString()}`);
     const inputData = {id: nanoid(), userId, ...data}
     const result = await newScreenTime(inputData);
