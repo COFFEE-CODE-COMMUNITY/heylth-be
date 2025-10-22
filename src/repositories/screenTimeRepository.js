@@ -4,7 +4,7 @@ export const findAllScreenTime = async userId => await prisma.screenTimeTracker.
     where: { userId: userId },
     select: {
         id: true,
-        durationMinutes: true,
+        duration: true,
         createdAt: true,
     },
 });
@@ -18,7 +18,7 @@ export const findScreenTimeById = async (screenTimeId, userId) => await prisma.s
     },
     select: {
         id: true,
-        durationMinutes: true,
+        duration: true,
         createdAt: true,
     },
 });
@@ -26,7 +26,7 @@ export const findScreenTimeById = async (screenTimeId, userId) => await prisma.s
 export const newScreenTime = async data => await prisma.screenTimeTracker.create({
     data: { 
         id: data.id,
-        durationMinutes: data.duration_minutes,
+        duration: data.duration,
         userId: data.userId,
     },
 });
@@ -37,11 +37,11 @@ export const updateScreenTime = async (updateData, screenTimeId, userId) => awai
         userId: userId,
     },
     data: { 
-        durationMinutes: updateData.duration_minutes,
+        duration: updateData.duration,
     },
     select: {
         id: true,
-        durationMinutes: true,
+        duration: true,
         createdAt: true,
     },
 });

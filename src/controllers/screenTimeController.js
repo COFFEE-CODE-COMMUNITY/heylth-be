@@ -13,7 +13,7 @@ export const getAllScreenTimeController = async (req, res) => {
         user_id: req.user.id,
         data: result.map(s => ({
             id: s.id,
-            duration_minutes: s.durationMinutes,
+            duration: s.duration,
             date: s.createdAt.toLocaleDateString(),
         })),
     });
@@ -27,7 +27,7 @@ export const getScreenTimeByIdController = async (req, res) => {
             message: `Success to get user's screen time!`,
             data: {
                 id: result.id,
-                duration_minutes: result.durationMinutes,
+                duration: result.duration,
                 date: result.date,
             },
         });
@@ -49,7 +49,7 @@ export const addScreenTimeController = async (req, res) => {
             username: req.user.username,
             data: {
                 id: result.id,
-                duration_minutes: result.durationMinutes,
+                duration: result.duration,
                 date: result.date,
             },
         });
@@ -70,7 +70,7 @@ export const updateScreenTimeController = async (req, res) => {
             message: `Success to update screen time!`,
             data: {
                 id: result.id,
-                duration_minutes: result.durationMinutes,
+                duration: result.duration,
                 date: result.date,
             },
         });
