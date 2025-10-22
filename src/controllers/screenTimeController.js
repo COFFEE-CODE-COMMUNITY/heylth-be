@@ -41,17 +41,25 @@ export const getScreenTimeByIdController = async (req, res) => {
 };
 
 export const addScreenTimeController = async (req, res) => {
-    const result = await addScreenTime(req.body, req.user.id);
-    return res.status(201).json({
-        success: true,
-        message: `Success to create new screen time!`,
-        username: req.user.username,
-        data: {
-            id: result.id,
-            duration_minutes: result.durationMinutes,
-            date: result.date,
-        },
-    });
+    try {
+        const result = await addScreenTime(req.body, req.user.id);
+        return res.status(201).json({
+            success: true,
+            message: `Success to create new screen time!`,
+            username: req.user.username,
+            data: {
+                id: result.id,
+                duration_minutes: result.durationMinutes,
+                date: result.date,
+            },
+        });
+    } catch (error) {
+        res.status(409).json({
+            success: true,
+            message: `Failed to create new screen time!`,
+            error: error.message,
+        });
+    }
 };
 
 export const updateScreenTimeController = async (req, res) => {
