@@ -24,7 +24,7 @@ export const findSleepTrackerById = async (sleepId, userId) => prisma.sleepTrack
         duration: true,
         createdAt: true,
     },
-})
+});
 
 export const newSleepTracker = async (data, userId) => await prisma.sleepTracker.create({
     data: {
