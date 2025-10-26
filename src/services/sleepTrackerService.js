@@ -21,16 +21,23 @@ export const getSleepTrackerById = async (sleepId, userId) => {
 export const averageSleepTracker = async (userId, username) => {
   const date = new Date();
   const dateNow = date.toLocaleDateString();
-  const oneWeekAgo = `${date.getDate() - 7}/${date.getMonth() + 1}/${date.getFullYear()}`;
+  const oneWeekAgo = `${date.getDate() - 7}/${
+    date.getMonth() + 1
+  }/${date.getFullYear()}`;
 
   const result = await findAllSleepTracker(userId);
-  if(!result.length) throw new Error(`${username} does not have any sleep tracker!`);
-  const filterWeekly = result.filter(s => (
-    s.createdAt.toLocaleDateString() >= oneWeekAgo && 
-    s.createdAt.toLocaleDateString() <= dateNow
-  ));
-  const averageSleep = parseInt((filterWeekly.reduce((total, d) => total + d.duration, 0)/filterWeekly.length));
-  return averageSleep;
+  if (!result.length)
+    throw new Error(`${username} does not have any sleep tracker!`);
+  const filterWeekly = result.filter(
+    (s) =>
+      s.createdAt.toLocaleDateString() >= oneWeekAgo &&
+      s.createdAt.toLocaleDateString() <= dateNow
+  );
+  const averageSleep = (
+    filterWeekly.reduce((total, d) => total + d.duration, 0) /
+      filterWeekly.length
+  ).toFixed(1);
+  return parseFloat(averageSleep);
 };
 
 export const addSleepTracker = async (data, userId) => {
