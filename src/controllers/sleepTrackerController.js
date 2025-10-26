@@ -47,21 +47,21 @@ export const getSleepTrackerByIdController = async (req, res) => {
 
 export const getAverageSleepController = async (req, res) => {
   try {
-      const result = await averageSleepTracker(req.user.id, req.user.username);
-      return res.status(200).json({
-        success: true,
-        message: `Success to get user's sleep average!`,
-        username: req.user.username,
-        data: {
-          user_id: req.user.id,
-          average_sleep: result,
-        },
-      });
+    const result = await averageSleepTracker(req.user.id, req.user.username);
+    return res.status(200).json({
+      success: true,
+      message: `Success to get user's sleep average!`,
+      username: req.user.username,
+      data: {
+        user_id: req.user.id,
+        average_sleep: result,
+      },
+    });
   } catch (error) {
     res.status(200).json({
-        success: true,
-        message: error.message,
-    })
+      success: true,
+      message: error.message,
+    });
   }
 };
 
