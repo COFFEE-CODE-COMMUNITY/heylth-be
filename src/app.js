@@ -4,6 +4,7 @@ import sleepTrackerRouter from './routes/sleepTrackerRoute.js';
 import eatTrackerRouter from './routes/eatTrackerRoute.js';
 import screenTimeRouter from './routes/screenTimeRoute.js';
 import lifestyleRouter from './routes/lifestyleRoute.js';
+import journalRouter from './routes/journalRoute.js';
 import cors from 'cors';
 
 const createApp = () => {
@@ -19,6 +20,7 @@ const createApp = () => {
     app.use('/api/eat', eatTrackerRouter);
     app.use('/api/screenTime', screenTimeRouter);
     app.use('/api/lifestyle', lifestyleRouter);
+    app.use('/api/journal', journalRouter);
     return app;
 };
 
