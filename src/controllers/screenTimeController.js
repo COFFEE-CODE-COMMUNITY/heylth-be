@@ -27,15 +27,23 @@ export const getAllScreenTimeController = async (req, res) => {
 };
 
 export const getAverageScreenTimeController = async (req, res) => {
-  const result = await averageScreenTime(req.user.id, req.user.username);
-  return res.status(200).json({
-    success: true,
-    message: `Success to get user's screen time average!`,
-    data: {
-        user_id: req.user.id,
-        average_screen_time: result,
-    },
-  });
+  try {
+    const result = await averageScreenTime(req.user.id, req.user.username);
+    return res.status(200).json({
+      success: true,
+      message: `Success to get user's screen time average!`,
+      data: {
+          user_id: req.user.id,
+          average_screen_time: result,
+      },
+    });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: `Failed to get user's average screen time`,
+      error: error.message,
+    });
+  }
 };
 
 export const getScreenTimeByIdController = async (req, res) => {
