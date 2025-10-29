@@ -60,7 +60,8 @@ export const getAverageSleepController = async (req, res) => {
   } catch (error) {
     res.status(200).json({
       success: true,
-      message: error.message,
+      message: `Failed to get user's sleep average!`,
+      error: error.message,
     });
   }
 };

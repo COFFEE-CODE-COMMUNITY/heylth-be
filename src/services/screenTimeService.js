@@ -22,7 +22,6 @@ export const averageScreenTime = async (userId, username) => {
         st.createdAt.toLocaleDateString() >= dateWeekAgo &&
         st.createdAt.toLocaleDateString() <= dateNow
     ));
-    console.log(filterWeeklyScreenTime);
     const result = (filterWeeklyScreenTime.reduce((total, st) => total + st.duration, 0)/filterWeeklyScreenTime.length).toFixed(1); 
     return parseFloat(result);
 };

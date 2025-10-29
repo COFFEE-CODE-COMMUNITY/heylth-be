@@ -48,20 +48,28 @@ export const getEatTrackerByIdController = async (req, res) => {
 };
 
 export const getCountEatTrackerController = async (req, res) => {
-  const result = await countEatTracker(req.user.id);
-  if (!result)
+  try {
+    const result = await countEatTracker(req.user.id, req.user.username);
+    if (!result)
+      return res.status(200).json({
+        success: true,
+        message: error.message,
+      });
     return res.status(200).json({
       success: true,
-      message: error.message,
+      message: `Success to user's count meal!`,
+      data: {
+        user_id: req.user.id,
+        count_meal: result,
+      },
     });
-  return res.status(200).json({
-    success: true,
-    message: `Success to user's count meal!`,
-    data: {
-      user_id: req.user.id,
-      count_meal: result,
-    },
-  });
+  } catch (error) {
+    return res.status(404).json({
+      success: false, 
+      message: `Failed to count user's meal!`,
+      error: error.message,
+    });
+  }
 };
 
 export const addEatTrackerController = async (req, res) => {
