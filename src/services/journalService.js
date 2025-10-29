@@ -1,5 +1,10 @@
 import { nanoid } from "nanoid";
-import { newJournal } from "../repositories/journalRepository.js";
+import { findAllJournal, newJournal } from "../repositories/journalRepository.js";
+
+export const allJournal = async userId => {
+    const result = await findAllJournal(userId);
+    return result;
+};
 
 export const addJournal = async (data, userId) => {
     const inputData = {id: nanoid(), ...data};
