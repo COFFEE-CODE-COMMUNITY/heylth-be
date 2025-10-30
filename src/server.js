@@ -7,5 +7,5 @@ const app = createApp();
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-    console.log(`Your app running on http://127.0.0.1:${PORT}`);
+    console.log(`Your app running on http://localhost:${PORT}`);
 });
