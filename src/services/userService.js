@@ -17,11 +17,11 @@ export const addUser = async data => {
 };
 
 export const getUser = async data => {
-    const user = await getAllUser(data);
-    if(!user.length) throw new Error(`No user dat yet!`);
+    const result = await getAllUser(data);
+    if(!result.length) throw new Error(`No user dat yet!`);
     
-    const isUsernameExist = user.find(u => u.username.toLowerCase() === data.username.toLowerCase());
-    if(!isUsernameExist) throw new Error(`Username ${data.username} not found!`);
+    const user = result.find(u => u.username.toLowerCase() === data.username.toLowerCase());
+    if(!user) throw new Error(`Username ${data.username} not found!`);
 
     const isMatchPassword = await comparePassword(data.password, user.password);
     if(!isMatchPassword) throw new Error(`Wrong password!`);
