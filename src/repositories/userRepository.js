@@ -35,3 +35,14 @@ export const getUserData = async data => await prisma.user.findFirst({
         sex: true
     }
 });
+
+export const getAllUser = async () => await prisma.user.findMany({
+    select: { 
+        id: true,
+        username: true,
+        email: true,
+        password: true,
+        age: true,
+        sex: true
+    },
+})
