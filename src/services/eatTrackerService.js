@@ -5,6 +5,7 @@ import {
   newEatTracker,
   updateEatTracker,
 } from "../repositories/eatTrackerRepository.js";
+import { dateInputIso } from "../utils/dateIso.js";
 
 export const allEatTracker = async (userId) => {
   const result = await findAllEatTracker(userId);
@@ -35,8 +36,14 @@ export const countEatTracker = async (userId, username) => {
 };
 
 export const addEatTracker = async (data, userId) => {
-  const dateNow = new Date().toLocaleDateString();
+  const { date, meal_type } = data;
 
+  // convert date ke ISO string
+  const dateIso = dateInputIso(date);
+  data.date = dateIso;
+  data.meal_type = meal_type;
+
+  const dateNow = new Date(dateIso).toLocaleDateString();
   const isExist = (await findAllEatTracker(userId)).filter(
     (e) =>
       e.createdAt.toLocaleDateString() === dateNow &&
