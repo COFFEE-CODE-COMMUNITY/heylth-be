@@ -27,6 +27,7 @@ export const newEatTracker = async (data, userId) =>
     data: {
       id: data.id,
       meal_type: data.meal_type,
+      createdAt: data.date,
       userId: userId,
     },
   });

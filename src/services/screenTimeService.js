@@ -5,6 +5,7 @@ import {
   newScreenTime,
   updateScreenTime,
 } from "../repositories/screenTimeRepository.js";
+import { dateInputIso } from "../utils/dateIso.js";
 
 export const allScreenTime = async (userId) => {
   const result = await findAllScreenTime(userId);
@@ -27,12 +28,12 @@ export const averageScreenTime = async (userId, username) => {
 };
 
 export const addScreenTime = async (data, userId) => {
-  const { date, duration} = data;
+  const { date, duration } = data;
 
   // convert date ke ISO string
   const dateIso = dateInputIso(date);
   data.date = dateIso;
-  date.duration = duration;
+  data.duration = duration;
   
   const allScreenTime = await findAllScreenTime(userId);
   const isExist = allScreenTime.find(
