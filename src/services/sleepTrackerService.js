@@ -5,6 +5,7 @@ import {
   newSleepTracker,
   updateSleepTracker,
 } from "../repositories/sleepTrackerRepository.js";
+import { dateInputIso } from "../utils/dateIso.js";
 
 export const getAllSleepTracker = async (userId) => {
   const sleepTracker = await findAllSleepTracker(userId);
@@ -41,8 +42,12 @@ export const averageSleepTracker = async (userId, username) => {
 };
 
 export const addSleepTracker = async (data, userId) => {
-  const { sleep_start, sleep_end } = data;
+  const { date, sleep_start, sleep_end } = data;
 
+  // convert date ke ISO string
+  const dateIso = dateInputIso(date);
+  data.date = dateIso;
+  
   // Validasi range jam
   if (
     sleep_start < 0 ||

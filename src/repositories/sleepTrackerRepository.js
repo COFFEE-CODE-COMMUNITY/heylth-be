@@ -35,6 +35,7 @@ export const newSleepTracker = async (data, userId) =>
       sleepStart: data.sleep_start,
       sleepEnd: data.sleep_end,
       duration: data.sleepDuration,
+      createdAt: data.date,
       userId: userId,
     },
   });
