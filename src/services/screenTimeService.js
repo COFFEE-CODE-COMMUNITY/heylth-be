@@ -27,6 +27,13 @@ export const averageScreenTime = async (userId, username) => {
 };
 
 export const addScreenTime = async (data, userId) => {
+  const { date, duration} = data;
+
+  // convert date ke ISO string
+  const dateIso = dateInputIso(date);
+  data.date = dateIso;
+  date.duration = duration;
+  
   const allScreenTime = await findAllScreenTime(userId);
   const isExist = allScreenTime.find(
     (st) =>
