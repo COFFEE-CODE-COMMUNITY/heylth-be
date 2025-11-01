@@ -27,6 +27,7 @@ export const newScreenTime = async (data) =>
     data: {
       id: data.id,
       duration: data.duration,
+      createdAt: data.date,
       userId: data.userId,
     },
   });
