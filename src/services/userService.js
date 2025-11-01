@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import { createUser, getUsersUsername, getUserEmail, getUserData, getAllUser } from "../repositories/userRepository.js";
+import { createUser, getUsersUsername, getUserEmail, getAllUser } from "../repositories/userRepository.js";
 import { hashPassword, comparePassword } from "../utils/hashPassword.js";
 import { signToken } from "../utils/jwt.js";
 
@@ -21,7 +21,7 @@ export const getUser = async data => {
     if(!result.length) throw new Error(`No user dat yet!`);
     
     const user = result.find(u => u.username.toLowerCase() === data.username.toLowerCase());
-    if(!user) throw new Error(`Username ${data.username} not found!`);
+    if(!user) throw new Error(`Wrong username or password!`);
 
     const isMatchPassword = await comparePassword(data.password, user.password);
     if(!isMatchPassword) throw new Error(`Wrong password!`);
