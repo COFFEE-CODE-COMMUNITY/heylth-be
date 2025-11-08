@@ -5,6 +5,7 @@ import eatTrackerRouter from './routes/eatTrackerRoute.js';
 import screenTimeRouter from './routes/screenTimeRoute.js';
 import lifestyleRouter from './routes/lifestyleRoute.js';
 import journalRouter from './routes/journalRoute.js';
+import reminderRouter from './routes/reminderRoute.js';
 import cors from 'cors';
 
 const createApp = () => {
@@ -21,6 +22,7 @@ const createApp = () => {
     app.use('/api/screenTime', screenTimeRouter);
     app.use('/api/lifestyle', lifestyleRouter);
     app.use('/api/journal', journalRouter);
+    app.use('/api/reminder', reminderRouter);
     return app;
 };
 

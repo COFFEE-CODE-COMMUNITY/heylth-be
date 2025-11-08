@@ -1,4 +1,3 @@
-import { findAllEatTracker } from "../repositories/eatTrackerRepository.js";
 import { countEatTracker } from "./eatTrackerService.js";
 import { averageScreenTime } from "./screenTimeService.js";
 import { averageSleepTracker } from "./sleepTrackerService.js";
