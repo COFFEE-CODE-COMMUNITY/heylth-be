@@ -5,6 +5,7 @@ import {
   averageSleepTracker,
   updateSleepTrackerById,
 } from "../services/sleepTrackerService.js";
+import { checkAndGenerateReminder } from "../utils/checkAndGenerateReminder.js";
 
 export const getAllSleepTrackerController = async (req, res) => {
   const userSleepTracker = await getAllSleepTracker(req.user.id);
@@ -69,6 +70,10 @@ export const getAverageSleepController = async (req, res) => {
 export const addSleepTrackerController = async (req, res) => {
   try {
     const result = await addSleepTracker(req.body, req.user.id);
+    const date = req.body.date;
+
+    await checkAndGenerateReminder(req.user.id, date);
+    
     return res.status(201).json({
       success: true,
       message: "Success to create new sleep tracker!",

@@ -5,6 +5,7 @@ import {
   addScreenTime,
   updateScreenTimeById,
 } from "../services/screenTimeService.js";
+import { checkAndGenerateReminder } from "../utils/checkAndGenerateReminder.js";
 
 export const getAllScreenTimeController = async (req, res) => {
   const result = await allScreenTime(req.user.id);
@@ -70,6 +71,9 @@ export const getScreenTimeByIdController = async (req, res) => {
 export const addScreenTimeController = async (req, res) => {
   try {
     const result = await addScreenTime(req.body, req.user.id);
+    const date = req.body.date;
+    await checkAndGenerateReminder(req.user.id, date);
+
     return res.status(201).json({
       success: true,
       message: `Success to create new screen time!`,
