@@ -14,18 +14,16 @@ export const allScreenTime = async (userId) => {
 
 export const averageScreenTime = async (userId, username) => {
   const date = new Date();
-  const dateNow = date.toLocaleDateString();
-  const dateWeekAgo = `${date.getDate() - 7}/${
-    date.getMonth() + 1
-  }/${date.getFullYear()}`;
+  const dateNow = new Date(date.toISOString());
+  const dateWeekAgo = new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() - 7}`);
 
   const resultTemp = await findAllScreenTime(userId);
   if (!resultTemp.length)
     throw new Error(`${username} does not have any screen time tracker!`);
   const filterWeeklyScreenTime = resultTemp.filter(
     (st) =>
-      st.createdAt.toLocaleDateString() >= dateWeekAgo &&
-      st.createdAt.toLocaleDateString() <= dateNow
+      st.createdAt >= dateWeekAgo &&
+      st.createdAt <= dateNow 
   );
   const result = (
     filterWeeklyScreenTime.reduce((total, st) => total + st.duration, 0) /
@@ -49,11 +47,19 @@ export const addOrUpdateScreenTime = async (data, userId) => {
   );
   if (isExist) {
     const result = await updateScreenTime(data, isExist.id);
-    return {...result, message: 'Success to update screen time!', statusCode: 200};
+    return {
+      ...result,
+      message: "Success to update screen time!",
+      statusCode: 200,
+    };
   }
   const inputData = { id: nanoid(), userId, ...data };
   const result = await newScreenTime(inputData);
-  return {...result, message: 'Success to create a new screen time!', statusCode: 201};
+  return {
+    ...result,
+    message: "Success to create a new screen time!",
+    statusCode: 201,
+  };
 };
 
 export const screenTimeById = async (screenTimeId, userId) => {
