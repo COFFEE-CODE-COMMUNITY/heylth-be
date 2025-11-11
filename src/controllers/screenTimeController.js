@@ -2,8 +2,7 @@ import {
   allScreenTime,
   screenTimeById,
   averageScreenTime,
-  addScreenTime,
-  updateScreenTimeById,
+  addOrUpdateScreenTime,
 } from "../services/screenTimeService.js";
 import { checkAndGenerateReminder } from "../utils/checkAndGenerateReminder.js";
 
@@ -68,15 +67,15 @@ export const getScreenTimeByIdController = async (req, res) => {
   }
 };
 
-export const addScreenTimeController = async (req, res) => {
+export const addOrUpdateScreenTimeController = async (req, res) => {
   try {
-    const result = await addScreenTime(req.body, req.user.id);
+    const result = await addOrUpdateScreenTime(req.body, req.user.id);
     const date = req.body.date;
     await checkAndGenerateReminder(req.user.id, date);
 
-    return res.status(201).json({
+    return res.status(result.statusCode).json({
       success: true,
-      message: `Success to create new screen time!`,
+      message: result.message,
       username: req.user.username,
       data: {
         id: result.id,
@@ -93,27 +92,3 @@ export const addScreenTimeController = async (req, res) => {
   }
 };
 
-export const updateScreenTimeController = async (req, res) => {
-  try {
-    const result = await updateScreenTimeById(
-      req.body,
-      req.params.screenTimeId,
-      req.user.id
-    );
-    return res.status(200).json({
-      success: true,
-      message: `Success to update screen time!`,
-      data: {
-        id: result.id,
-        duration: result.duration,
-        date: result.date,
-      },
-    });
-  } catch (error) {
-    return res.status(404).json({
-      success: false,
-      message: `Failed to update screen time!`,
-      error: error.message,
-    });
-  }
-};
