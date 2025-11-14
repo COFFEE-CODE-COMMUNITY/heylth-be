@@ -5,6 +5,7 @@ import {
   addEatTracker,
   updateEatTrackerById,
 } from "../services/eatTrackerService.js";
+import { checkAndGenerateReminder } from "../utils/checkAndGenerateReminder.js";
 
 export const getAllEatTrackerController = async (req, res) => {
   const result = await allEatTracker(req.user.id);
@@ -49,18 +50,20 @@ export const getEatTrackerByIdController = async (req, res) => {
 
 export const getCountEatTrackerController = async (req, res) => {
   try {
-    const result = await countEatTracker(req.user.id, req.user.username);
+    const result = await countEatTracker(req.user.id);
     if (!result)
       return res.status(200).json({
         success: true,
-        message: error.message,
+        message: 'You do not have any tracker!',
       });
     return res.status(200).json({
       success: true,
       message: `Success to user's count meal!`,
       data: {
         user_id: req.user.id,
-        count_meal: result,
+        countBreakfast: result.count_breakfast,
+        countLunch: result.count_lunch,
+        countDinner: result.count_dinner,
       },
     });
   } catch (error) {
@@ -75,6 +78,10 @@ export const getCountEatTrackerController = async (req, res) => {
 export const addEatTrackerController = async (req, res) => {
   try {
     const result = await addEatTracker(req.body, req.user.id);
+    const date = req.body.date;
+
+    await checkAndGenerateReminder(req.user.id, date);
+
     return res.status(201).json({
       success: true,
       message: `Success to create new eat tracker!`,

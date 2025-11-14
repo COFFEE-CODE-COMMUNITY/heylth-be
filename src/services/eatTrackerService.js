@@ -5,6 +5,7 @@ import {
   newEatTracker,
   updateEatTracker,
 } from "../repositories/eatTrackerRepository.js";
+import { dateInputIso } from "../utils/dateIso.js";
 
 export const allEatTracker = async (userId) => {
   const result = await findAllEatTracker(userId);
@@ -21,30 +22,50 @@ export const eatTrackerById = async (userId, eatId) => {
   return result;
 };
 
-export const countEatTracker = async (userId, username) => {
-    const date = new Date();
-    const dateNow = date.toLocaleDateString();
-    const dateWeekAgo = `${date.getDate()  - 7}/${date.getMonth() + 1}/${date.getFullYear()}`;
-    const resultTemp = await findAllEatTracker(userId);
-    if(!resultTemp.length) throw new Error(`${username} does not have any tracker id!`);
-    const filterEatWeekly = resultTemp.filter(e => (
-        e.createdAt.toLocaleDateString() >= dateWeekAgo &&
-        e.createdAt.toLocaleDateString() <= dateNow 
-    ));
-    return filterEatWeekly.length;
+export const countEatTracker = async (userId) => {
+  const date = new Date();
+  const dateNow = new Date(date.toISOString());
+  const dateWeekAgo = new Date(
+    `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() - 7}`
+  );
+  const resultTemp = await findAllEatTracker(userId);
+  if (!resultTemp.length) return 0;
+  const filterEatWeekly = resultTemp.filter(
+    (e) => e.createdAt >= dateWeekAgo && e.createdAt <= dateNow
+  );
+  const calculateBreakfast = filterEatWeekly.filter(
+    (e) => e.meal_type.toLowerCase() === "breakfast"
+  ).length;
+  const calculateLunch = filterEatWeekly.filter(
+    (e) => e.meal_type.toLowerCase() === "lunch"
+  ).length;
+  const calculateDinner = filterEatWeekly.filter(
+    (e) => e.meal_type.toLowerCase() === "dinner"
+  ).length;
+  return {
+    count_breakfast: calculateBreakfast,
+    count_lunch: calculateLunch,
+    count_dinner: calculateDinner,
+  };
 };
 
 export const addEatTracker = async (data, userId) => {
-  const dateNow = new Date().toLocaleDateString();
+  const { date, meal_type } = data;
 
+  // convert date ke ISO string
+  data.date = date;
+  data.meal_type = meal_type;
+
+  const dateFromUser = new Date(date);
   const isExist = (await findAllEatTracker(userId)).filter(
     (e) =>
-      e.createdAt.toLocaleDateString() === dateNow &&
+      e.createdAt.toISOString().split("T")[0] ===
+        dateFromUser.toISOString().split("T")[0] &&
       e.meal_type.toLowerCase() === data.meal_type.toLowerCase()
   );
   if (isExist.length)
     throw new Error(
-      `Eat tracker data with meal_type ${data.meal_type} and date ${dateNow} already exist!`
+      `Eat tracker data with meal_type ${data.meal_type} already exist!`
     );
 
   const inputData = { id: nanoid(), userId, ...data };

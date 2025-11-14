@@ -1,6 +1,7 @@
 import Joi from 'joi';
 
 export const addSleepTrackerSchema = Joi.object({
+    date: Joi.date().required(),
     sleep_start: Joi.number().required(),
     sleep_end: Joi.number().required(),
 });

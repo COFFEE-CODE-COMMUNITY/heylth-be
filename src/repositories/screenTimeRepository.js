@@ -27,15 +27,15 @@ export const newScreenTime = async (data) =>
     data: {
       id: data.id,
       duration: data.duration,
+      createdAt: data.date,
       userId: data.userId,
     },
   });
 
-export const updateScreenTime = async (updateData, screenTimeId, userId) =>
+export const updateScreenTime = async (updateData, id) =>
   await prisma.screenTimeTracker.update({
     where: {
-      id: screenTimeId,
-      userId: userId,
+        id: id,
     },
     data: {
       duration: updateData.duration,

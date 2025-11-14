@@ -5,40 +5,59 @@ import {
   newScreenTime,
   updateScreenTime,
 } from "../repositories/screenTimeRepository.js";
+import { dateInputIso } from "../utils/dateIso.js";
 
 export const allScreenTime = async (userId) => {
   const result = await findAllScreenTime(userId);
   return result;
 };
 
-export const averageScreenTime = async (userId, username) => {
-    const date = new Date();
-    const dateNow = date.toLocaleDateString();
-    const dateWeekAgo = `${date.getDate() - 7}/${date.getMonth() + 1}/${date.getFullYear()}`;
+export const averageScreenTime = async (userId) => {
+  const date = new Date();
+  const dateNow = new Date(date.toISOString());
+  const dateWeekAgo = new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() - 7}`);
 
-    const resultTemp = await findAllScreenTime(userId);
-    if(!resultTemp.length) throw new Error(`${username} does not have any screen time tracker!`);
-    const filterWeeklyScreenTime = resultTemp.filter(st => (
-        st.createdAt.toLocaleDateString() >= dateWeekAgo &&
-        st.createdAt.toLocaleDateString() <= dateNow
-    ));
-    const result = (filterWeeklyScreenTime.reduce((total, st) => total + st.duration, 0)/filterWeeklyScreenTime.length).toFixed(1); 
-    return parseFloat(result);
+  const resultTemp = await findAllScreenTime(userId);
+  if (!resultTemp.length) return 0;
+  const filterWeeklyScreenTime = resultTemp.filter(
+    (st) =>
+      st.createdAt >= dateWeekAgo &&
+      st.createdAt <= dateNow 
+  );
+  const result = (
+    filterWeeklyScreenTime.reduce((total, st) => total + st.duration, 0) /
+    filterWeeklyScreenTime.length
+  ).toFixed(1);
+  return parseFloat(result);
 };
 
-export const addScreenTime = async (data, userId) => {
+export const addOrUpdateScreenTime = async (data, userId) => {
+  const { date, duration } = data;
+
+  data.date = date;
+  data.duration = duration;
+
+  const dateFromUser = new Date(date);
+
   const allScreenTime = await findAllScreenTime(userId);
   const isExist = allScreenTime.find(
-    (st) =>
-      st.createdAt.toLocaleDateString() === new Date().toLocaleDateString()
+    (st) => st.createdAt.toISOString().split('T')[0] === dateFromUser.toISOString().split('T')[0],
   );
-  if (isExist)
-    throw new Error(
-      `Screen time already exist at date ${new Date().toLocaleDateString()}`
-    );
+  if (isExist) {
+    const result = await updateScreenTime(data, isExist.id);
+    return {
+      ...result,
+      message: "Success to update screen time!",
+      statusCode: 200,
+    };
+  }
   const inputData = { id: nanoid(), userId, ...data };
   const result = await newScreenTime(inputData);
-  return result;
+  return {
+    ...result,
+    message: "Success to create a new screen time!",
+    statusCode: 201,
+  };
 };
 
 export const screenTimeById = async (screenTimeId, userId) => {
@@ -50,25 +69,6 @@ export const screenTimeById = async (screenTimeId, userId) => {
   const result = {
     date: resultTemp.createdAt.toLocaleDateString(),
     ...resultTemp,
-  };
-  return result;
-};
-
-export const updateScreenTimeById = async (
-  updateData,
-  screenTimeId,
-  userId
-) => {
-  const isExist = await findScreenTimeById(screenTimeId, userId);
-  if (!isExist)
-    throw new Error(
-      `Screen time with id ${screenTimeId} at user id ${userId} not found!`
-    );
-
-  const inputData = await updateScreenTime(updateData, screenTimeId, userId);
-  const result = {
-    date: inputData.createdAt.toLocaleDateString(),
-    ...inputData,
   };
   return result;
 };

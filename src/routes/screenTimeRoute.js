@@ -5,12 +5,10 @@ import {
   getAllScreenTimeController,
   getScreenTimeByIdController,
   getAverageScreenTimeController,
-  addScreenTimeController,
-  updateScreenTimeController,
+  addOrUpdateScreenTimeController,
 } from "../controllers/screenTimeController.js";
 import {
   addScreenTimeSchema,
-  updateScreenTimeSchema,
 } from "../validations/screenTimeValidation.js";
 
 const router = Router();
@@ -22,11 +20,6 @@ router.get("/:screenTimeId", getScreenTimeByIdController);
 router.post(
   "/",
   validateMiddleware(addScreenTimeSchema),
-  addScreenTimeController
-);
-router.patch(
-  "/:screenTimeId",
-  validateMiddleware(updateScreenTimeSchema),
-  updateScreenTimeController
+  addOrUpdateScreenTimeController
 );
 export default router;
