@@ -5,7 +5,6 @@ import {
   newScreenTime,
   updateScreenTime,
 } from "../repositories/screenTimeRepository.js";
-import { dateInputIso } from "../utils/dateIso.js";
 
 export const allScreenTime = async (userId) => {
   const result = await findAllScreenTime(userId);
