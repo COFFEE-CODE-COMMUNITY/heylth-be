@@ -64,6 +64,7 @@ export const getCountEatTrackerController = async (req, res) => {
         countBreakfast: result.count_breakfast,
         countLunch: result.count_lunch,
         countDinner: result.count_dinner,
+        countAll: result.count_all,
       },
     });
   } catch (error) {
