@@ -13,7 +13,7 @@ export const lifestyleStatus = async (userId, username) => {
       
     if (
         (averageSleepWeekly >= 5 && averageSleepWeekly < 8) &&
-        (countMealWeekly >= 10 && countMealWeekly < 17) &&
+        (countMealWeekly >= 8 && countMealWeekly < 17) &&
         (averageScreenTimeWeekly > 8 && averageScreenTimeWeekly <= 10)
     ) {
         return { status: 'Average', color: 'bg-yellow-500' };

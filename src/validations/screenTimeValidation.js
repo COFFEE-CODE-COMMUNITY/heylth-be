@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 export const addScreenTimeSchema = Joi.object({
-    date: Joi.date().iso().max(new Date().toISOString()).required(),
+    date: Joi.date().required(),
     duration: Joi.number().required(),
 });
 

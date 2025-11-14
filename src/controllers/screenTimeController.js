@@ -85,7 +85,7 @@ export const addOrUpdateScreenTimeController = async (req, res) => {
     });
   } catch (error) {
     res.status(409).json({
-      success: true,
+      success: false,
       message: `Failed to create new screen time!`,
       error: error.message,
     });

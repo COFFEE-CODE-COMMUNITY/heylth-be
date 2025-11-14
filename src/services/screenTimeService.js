@@ -12,14 +12,13 @@ export const allScreenTime = async (userId) => {
   return result;
 };
 
-export const averageScreenTime = async (userId, username) => {
+export const averageScreenTime = async (userId) => {
   const date = new Date();
   const dateNow = new Date(date.toISOString());
   const dateWeekAgo = new Date(`${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate() - 7}`);
 
   const resultTemp = await findAllScreenTime(userId);
-  if (!resultTemp.length)
-    throw new Error(`${username} does not have any screen time tracker!`);
+  if (!resultTemp.length) return 0;
   const filterWeeklyScreenTime = resultTemp.filter(
     (st) =>
       st.createdAt >= dateWeekAgo &&
@@ -35,15 +34,14 @@ export const averageScreenTime = async (userId, username) => {
 export const addOrUpdateScreenTime = async (data, userId) => {
   const { date, duration } = data;
 
-  // convert date ke ISO string
-  const dateIso = dateInputIso(date);
-  data.date = dateIso;
+  data.date = date;
   data.duration = duration;
 
-  const allScreenTime = await findAllScreenTime(userId);
+  const dateFromUser = new Date(date);
 
+  const allScreenTime = await findAllScreenTime(userId);
   const isExist = allScreenTime.find(
-    (st) => st.createdAt.toISOString().split("T")[0] === dateIso.split("T")[0]
+    (st) => st.createdAt.toISOString().split('T')[0] === dateFromUser.toISOString().split('T')[0],
   );
   if (isExist) {
     const result = await updateScreenTime(data, isExist.id);

@@ -5,7 +5,9 @@ export const findUserReminder = async (userId) =>
     where: {
       userId,
     },
+    orderBy: { createdAt: "desc" },
   });
+
 
 export const createReminder = async (inputData, userId) =>
   await prisma.reminderTracker.create({
@@ -18,7 +20,26 @@ export const createReminder = async (inputData, userId) =>
       sleepMessage: inputData.sleepMessage,
       eatMessage: inputData.eatMessage,
       screenTimeMessage: inputData.screenTimeMessage,
+      date: inputData.date,
       createdAt: inputData.date,
       updatedAt: inputData.date,
+    },
+  });
+
+export const updateReminderUser = async (userId, date, updatedData) =>
+  await prisma.reminderTracker.update({
+    where: {
+      userId_date: {
+        userId: userId,
+        date: date,
+      },
+    },
+    data: {
+      sleepStatus: updatedData.sleepStatus,
+      eatStatus: updatedData.eatStatus,
+      screenTimeStatus: updatedData.screenTimeStatus,
+      sleepMessage: updatedData.sleepMessage,
+      eatMessage: updatedData.eatMessage,
+      screenTimeMessage: updatedData.screenTimeMessage,
     },
   });

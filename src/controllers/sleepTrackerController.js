@@ -49,6 +49,10 @@ export const getSleepTrackerByIdController = async (req, res) => {
 export const getAverageSleepController = async (req, res) => {
   try {
     const result = await averageSleepTracker(req.user.id, req.user.username);
+    if(!result) return res.status(200).json({
+      success: true,
+      message: 'You do not have any tracker!',
+    });
     return res.status(200).json({
       success: true,
       message: `Success to get user's sleep average!`,

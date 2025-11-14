@@ -1,7 +1,8 @@
 import { findAllSleepTracker } from "../repositories/sleepTrackerRepository.js";
 import { findAllEatTracker } from "../repositories/eatTrackerRepository.js";
 import { findAllScreenTime } from "../repositories/screenTimeRepository.js";
-import { generateReminder } from "../services/reminderService.js";
+import { generateReminder, updateReminder } from "../services/reminderService.js";
+import { findUserReminder } from "../repositories/reminderRepository.js";
 
 export const checkAndGenerateReminder = async (userId, dateInput) => {
   const dateFromUser = new Date(dateInput).toISOString().split("T")[0];
@@ -20,13 +21,17 @@ export const checkAndGenerateReminder = async (userId, dateInput) => {
     (st) => st.createdAt.toISOString().split("T")[0] === dateFromUser
   );
 
+  if (!(hasSleep && hasEat && hasScreen)) return;
+
+  // Cek apakah reminder sudah ada
+  const getUserReminder = await findUserReminder(userId);
+  const existedReminder = getUserReminder.find(
+    (r) => r.createdAt.toISOString().split("T")[0] === dateFromUser
+  );
   // Cek kalau semua tracker udah diisi
-  if (hasSleep && hasEat && hasScreen) {
-    try {
-      await generateReminder(userId, dateFromUser);
-      console.log(`✅ Reminder created for user ${userId}`);
-    } catch (error) {
-      console.log(`⚠️ Reminder skipped for user ${userId}: ${error.message}`);
-    }
+  if (existedReminder) {
+    await updateReminder(userId, dateFromUser);
+  } else {
+    await generateReminder(userId, dateFromUser);
   }
 };

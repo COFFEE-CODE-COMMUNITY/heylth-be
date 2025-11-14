@@ -50,18 +50,20 @@ export const getEatTrackerByIdController = async (req, res) => {
 
 export const getCountEatTrackerController = async (req, res) => {
   try {
-    const result = await countEatTracker(req.user.id, req.user.username);
+    const result = await countEatTracker(req.user.id);
     if (!result)
       return res.status(200).json({
         success: true,
-        message: error.message,
+        message: 'You do not have any tracker!',
       });
     return res.status(200).json({
       success: true,
       message: `Success to user's count meal!`,
       data: {
         user_id: req.user.id,
-        count_meal: result,
+        countBreakfast: result.count_breakfast,
+        countLunch: result.count_lunch,
+        countDinner: result.count_dinner,
       },
     });
   } catch (error) {
