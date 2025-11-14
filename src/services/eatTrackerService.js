@@ -46,6 +46,7 @@ export const countEatTracker = async (userId) => {
     count_breakfast: calculateBreakfast,
     count_lunch: calculateLunch,
     count_dinner: calculateDinner,
+    count_all: filterEatWeekly.length,
   };
 };
 

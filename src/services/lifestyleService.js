@@ -7,13 +7,13 @@ export const lifestyleStatus = async (userId, username) => {
     const countMealWeekly = await countEatTracker(userId, username);
     const averageScreenTimeWeekly = await averageScreenTime(userId, username);
 
-    if (averageSleepWeekly >= 8 && countMealWeekly >= 17 && averageScreenTimeWeekly <= 8) {
+    if (averageSleepWeekly >= 8 && countMealWeekly.count_all >= 17 && averageScreenTimeWeekly <= 8) {
         return { status: 'Good', color: 'bg-green-500' };
     }
       
     if (
         (averageSleepWeekly >= 5 && averageSleepWeekly < 8) &&
-        (countMealWeekly >= 8 && countMealWeekly < 17) &&
+        (countMealWeekly.count_all >= 8 && countMealWeekly.count_all < 17) &&
         (averageScreenTimeWeekly > 8 && averageScreenTimeWeekly <= 10)
     ) {
         return { status: 'Average', color: 'bg-yellow-500' };
