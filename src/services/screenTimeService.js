@@ -23,6 +23,8 @@ export const averageScreenTime = async (userId) => {
       st.createdAt >= dateWeekAgo &&
       st.createdAt <= dateNow 
   );
+  if(!filterWeeklyScreenTime.length) return 0;
+
   const result = (
     filterWeeklyScreenTime.reduce((total, st) => total + st.duration, 0) /
     filterWeeklyScreenTime.length
